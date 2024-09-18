@@ -1,0 +1,39 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "rugswebsitedemo",
+          "appId": "1:746243407219:android:03dcae81276f7564875906",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "rugswebsitedemo",
+          "configurations": {
+            "android": "1:746243407219:android:03dcae81276f7564875906",
+            "ios": "1:746243407219:ios:1be4d39abadb5270875906",
+            "macos": "1:746243407219:ios:1be4d39abadb5270875906",
+            "web": "1:746243407219:web:066002182fb5a2f7875906",
+            "windows": "1:746243407219:web:b4eb37ca2ea1f04e875906"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "yes",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

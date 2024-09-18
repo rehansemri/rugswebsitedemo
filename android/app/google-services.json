@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "746243407219",
+    "project_id": "rugswebsitedemo",
+    "storage_bucket": "rugswebsitedemo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:746243407219:android:03dcae81276f7564875906",
+        "android_client_info": {
+          "package_name": "com.example.website"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeerfSwdRLM8ZKksSkGSzDsv55ozV44sk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

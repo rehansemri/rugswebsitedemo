@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "firebase": "^10.13.1"
+  },
+  "scripts": {
+    "build": "flutter build web --web-renderer canvaskit --release"
   }
 }

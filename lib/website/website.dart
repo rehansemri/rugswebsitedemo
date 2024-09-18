@@ -23,11 +23,10 @@ class _WebsiteMainPageState extends State<WebsiteMainPage> {
           child: SingleChildScrollView(
         child: Expanded(
           child: Column(
-            children: [Header(),
+            children: [
+              Header(),
              HeroSection(),
-              Recent(),           
-               
-                Location(), 
+              Recent(),Location(), 
                 Featured(),
               Awards(),
               

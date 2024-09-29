@@ -1,47 +1,44 @@
+// featured.dart
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:website/website/constant/constant.dart';
 
-class Featured extends StatefulWidget {
-  @override
-  _FeaturedState createState() => _FeaturedState();
-}
+import '../../provider/provider_categories.dart';
 
-class _FeaturedState extends State<Featured> {
-  int currentPage = 1;
-  int itemsPerPage = 6;
-
-  final List<Map<String, dynamic>> products = List.generate(8, (index) {
-    return {
-      "cover": "product/",
-      "category": "Categories",
-    };
-  });
-
+class Featured extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-        final screenWidth = MediaQuery.of(context).size.width;
+    final featuredProvider = Provider.of<FeaturedProvider>(context);
+
+    if (featuredProvider.isLoading) {
+      return Center(child: Container());
+    } else if (featuredProvider.hasError) {
+      return Center(child: Text('Error: ${featuredProvider.errorMessage}'));
+    } else if (featuredProvider.products.isEmpty) {
+      return Center(child: Text('No products available.'));
+    }
+
+    final products = featuredProvider.products;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(height: headingPadding),
+        SizedBox(height: 20), // Adjust based on your constant value
         Heading(
           title: 'Category',
           subtitle: 'Find All Types of Categories.',
         ),
-        SizedBox(height: headingPadding),
+        SizedBox(height: 20), // Adjust based on your constant value
         Padding(
-          padding:  EdgeInsets.symmetric(horizontal:screenWidth<700?10: globalPadding ),
-          child: RecentCard(products:  products),
+          padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width < 700 ? 10 : 20),
+          child: RecentCard(products: products),
         ),
         SizedBox(height: 16),
-       
       ],
     );
   }
-
- 
 }
 
 class Heading extends StatelessWidget {
@@ -58,7 +55,7 @@ class Heading extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            fontSize: headingSize, // Responsive font size
+            fontSize: headingSize, // Adjust font size
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -67,7 +64,7 @@ class Heading extends StatelessWidget {
           subtitle,
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize:subHeadingSize, // Responsive font size
+            fontSize: subHeadingSize, // Adjust font size
             color: Colors.grey,
           ),
         ),
@@ -84,108 +81,58 @@ class RecentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-
-    // Adjust number of columns based on screen size
     final crossAxisCount = screenWidth / 180;
-
-    // Set the child aspect ratio for keeping items square or adjustable
     final childAspectRatio = screenWidth < 600 ? 0.8 : 1.0;
 
-    return  GridView.builder(
-          padding: const EdgeInsets.all(16.0),
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: crossAxisCount.toInt(),
-            childAspectRatio: childAspectRatio,
-            mainAxisSpacing: 16,
-            crossAxisSpacing: 16,
-          ),
-          itemCount: products.length,
-          itemBuilder: (context, index) {
-            final item = products[index];
-            return Stack(
-              children: [
-                // Background image with blur effect
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    image: DecorationImage(
-                      image: AssetImage('${item['cover']}${index + 1}.jpg'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 1.5, sigmaY: 1.5),
-                      child: Container(
-                        color: Colors.black.withOpacity(0.1),
-                      ),
-                    ),
+    return GridView.builder(
+      padding: const EdgeInsets.all(16.0),
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount.toInt(),
+        childAspectRatio: childAspectRatio,
+        mainAxisSpacing: 16,
+        crossAxisSpacing: 16,
+      ),
+      itemCount: products.length,
+      itemBuilder: (context, index) {
+        final item = products[index];
+        return Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                image: DecorationImage(
+                  image: NetworkImage(item['image']),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: .5, sigmaY: .5),
+                  child: Container(
+                    color: Colors.black.withOpacity(0.1),
                   ),
                 ),
-                // Centered text on top of the background image
-                Center(
-                  child: Text(
-                    item['category'],
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            );
-          },
-        );
-     
-  }
-}
-
-class Pagination extends StatelessWidget {
-  final int currentPage;
-  final int totalPages;
-  final ValueChanged<int> onPageChanged;
-
-  Pagination({
-    required this.currentPage,
-    required this.totalPages,
-    required this.onPageChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    bool isSmallScreen = MediaQuery.of(context).size.width < 600;
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(totalPages, (index) {
-        return InkWell(
-          onTap: () {
-            onPageChanged(index + 1);
-          },
-          child: Container(
-            padding: EdgeInsets.all(isSmallScreen ? 4.0 : 8.0),
-            margin: const EdgeInsets.symmetric(horizontal: 4.0),
-            decoration: BoxDecoration(
-              color: currentPage == index + 1 ? Colors.blue : Colors.grey[200],
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: Text(
-              "${index + 1}",
-              style: TextStyle(
-                fontSize: isSmallScreen ? 12 : 16,
-                color: currentPage == index + 1 ? Colors.white : Colors.black,
               ),
             ),
-          ),
+            Center(
+              child: Text(
+                item['name'] ?? 'No Name',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
         );
-      }),
+      },
     );
   }
 }

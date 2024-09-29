@@ -51,7 +51,7 @@ class Awards extends StatelessWidget {
         }
 
         return Container(
-          color: Color(0xFF122947), // Background color
+          color: Colors.white, // Background color
           width: double.infinity,
           padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: horizontalPadding), // Responsive padding
           child: Column(
@@ -65,7 +65,7 @@ class Awards extends StatelessWidget {
                   Text(
                     'Our Customers',
                     style: TextStyle(
-                      color: Colors.green,
+                      color: Colors.black,
                       fontSize: headingSize, // Keep heading responsive with headingSize
                       fontWeight: FontWeight.bold,
                     ),
@@ -75,7 +75,7 @@ class Awards extends StatelessWidget {
                   Text(
                     'Over 10000+ Happy Users Being With Us Still They Love Our Services',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: subHeadingSize, // Keep subheading responsive with subHeadingSize
                       fontWeight: FontWeight.w400,
                     ),
@@ -105,14 +105,14 @@ class Awards extends StatelessWidget {
                                   width: itemWidth, // Square container for icon
                                   height: itemWidth,
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.1),
+                                    color: Colors.black.withOpacity(0.1),
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                   child: Center(
                                     child: Icon(
                                       awards[i].icon,
                                       size: iconSize, // Responsive icon size
-                                      color: Colors.white,
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),
@@ -120,7 +120,7 @@ class Awards extends StatelessWidget {
                                 Text(
                                   awards[i].num,
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: Colors.black,
                                     fontSize: numFontSize, // Responsive number font size
                                   ),
                                 ),
